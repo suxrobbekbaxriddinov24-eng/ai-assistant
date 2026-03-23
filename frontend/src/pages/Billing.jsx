@@ -87,7 +87,7 @@ export default function Billing() {
         </div>
 
         <p className="text-xs text-gray-600 text-center mt-8">
-          Payments processed securely by Stripe. Cancel anytime.
+          Payments processed securely by Paddle. Cancel anytime.
         </p>
       </div>
     </div>

@@ -16,13 +16,12 @@ class Settings(BaseSettings):
     supabase_anon_key: str = ""
     supabase_service_key: str = ""  # server-side only
 
-    # Stripe
-    stripe_secret_key: str = ""
-    stripe_webhook_secret: str = ""
-    stripe_free_price_id: str = ""
-    stripe_plus_price_id: str = ""
-    stripe_pro_price_id: str = ""
-    stripe_premium_price_id: str = ""
+    # Paddle (payments — supports Uzbekistan)
+    paddle_api_key: str = ""
+    paddle_webhook_secret: str = ""
+    paddle_plus_price_id: str = ""
+    paddle_pro_price_id: str = ""
+    paddle_premium_price_id: str = ""
 
     # ElevenLabs (TTS — 10k chars/month free)
     elevenlabs_api_key: str = ""
