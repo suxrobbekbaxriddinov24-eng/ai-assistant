@@ -1,33 +1,35 @@
-import openai
 import httpx
+from groq import Groq
 from app.config import get_settings
 
 settings = get_settings()
 
 
 async def transcribe_audio(audio_bytes: bytes, filename: str = "audio.webm") -> dict:
-    """Convert speech to text using OpenAI Whisper."""
-    client = openai.OpenAI(api_key=settings.openai_api_key)
+    """
+    Convert speech to text using Groq's Whisper API.
+    Model: whisper-large-v3 — FREE on Groq's free tier.
+    """
+    client = Groq(api_key=settings.groq_api_key)
 
-    # Write bytes to a temp-like buffer with a name
-    import io
-    audio_file = io.BytesIO(audio_bytes)
-    audio_file.name = filename
-
-    response = client.audio.transcriptions.create(
-        model="whisper-1",
-        file=audio_file,
+    transcription = client.audio.transcriptions.create(
+        file=(filename, audio_bytes),
+        model="whisper-large-v3",
         response_format="verbose_json"
     )
     return {
-        "text": response.text,
-        "language": getattr(response, "language", "en"),
-        "duration_seconds": getattr(response, "duration", 0.0)
+        "text": transcription.text,
+        "language": getattr(transcription, "language", "en"),
+        "duration_seconds": getattr(transcription, "duration", 0.0)
     }
 
 
 async def synthesize_speech(text: str, voice_id: str = None) -> bytes:
-    """Convert text to speech using ElevenLabs. Returns MP3 bytes."""
+    """
+    Convert text to speech using ElevenLabs.
+    Free tier: 10,000 characters/month — enough for early users.
+    Returns MP3 bytes.
+    """
     vid = voice_id or settings.elevenlabs_voice_id
     url = f"https://api.elevenlabs.io/v1/text-to-speech/{vid}"
     headers = {

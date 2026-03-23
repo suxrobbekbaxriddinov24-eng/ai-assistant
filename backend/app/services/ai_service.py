@@ -1,5 +1,6 @@
-import anthropic
+import json
 from typing import AsyncGenerator, List
+from groq import Groq
 from app.config import get_settings
 
 settings = get_settings()
@@ -50,13 +51,17 @@ def build_system_prompt(user: dict, memories: List[str] = None) -> str:
 
 
 def get_model_for_tier(tier: str) -> str:
+    """
+    Map subscription tier to Groq model.
+    All models are FREE on Groq's free tier.
+    """
     models = {
-        "free": "claude-haiku-4-5-20251001",
-        "plus": "claude-sonnet-4-6",
-        "pro": "claude-sonnet-4-6",
-        "premium": "claude-opus-4-6"
+        "free":    "llama-3.1-8b-instant",       # Fast, lightweight
+        "plus":    "llama-3.3-70b-versatile",    # Smart, versatile
+        "pro":     "llama-3.3-70b-versatile",    # Smart, versatile
+        "premium": "llama-3.3-70b-versatile",    # Best available on Groq
     }
-    return models.get(tier, "claude-haiku-4-5-20251001")
+    return models.get(tier, "llama-3.1-8b-instant")
 
 
 async def stream_chat(
@@ -64,17 +69,19 @@ async def stream_chat(
     system_prompt: str,
     model: str,
 ) -> AsyncGenerator[str, None]:
-    """Stream Claude response token by token."""
-    client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
+    """Stream Groq response token by token."""
+    client = Groq(api_key=settings.groq_api_key)
 
-    with client.messages.stream(
+    stream = client.chat.completions.create(
         model=model,
         max_tokens=4096,
-        system=system_prompt,
-        messages=messages
-    ) as stream:
-        for text in stream.text_stream:
-            yield text
+        messages=[{"role": "system", "content": system_prompt}, *messages],
+        stream=True
+    )
+    for chunk in stream:
+        token = chunk.choices[0].delta.content
+        if token:
+            yield token
 
 
 async def chat_complete(
@@ -83,31 +90,31 @@ async def chat_complete(
     model: str,
     max_tokens: int = 4096
 ) -> tuple[str, int]:
-    """Non-streaming Claude call. Returns (text, total_tokens)."""
-    client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
+    """Non-streaming Groq call. Returns (text, total_tokens)."""
+    client = Groq(api_key=settings.groq_api_key)
 
-    response = client.messages.create(
+    response = client.chat.completions.create(
         model=model,
         max_tokens=max_tokens,
-        system=system_prompt,
-        messages=messages
+        messages=[{"role": "system", "content": system_prompt}, *messages],
+        stream=False
     )
-    text = response.content[0].text
-    tokens = response.usage.input_tokens + response.usage.output_tokens
+    text = response.choices[0].message.content
+    tokens = response.usage.total_tokens
     return text, tokens
 
 
 async def analyze_screen(screenshot_base64: str, goal: str, previous_actions: list) -> dict:
     """
-    Send screenshot to Claude Vision and get the next action to take.
-    Returns a dict with action details.
+    Send screenshot to Groq Vision and get the next action to take.
+    Uses llama-3.2-90b-vision-preview (free on Groq).
     """
-    client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
+    client = Groq(api_key=settings.groq_api_key)
 
     previous_str = ""
     if previous_actions:
         steps = [f"{i+1}. {a.get('description', str(a))}" for i, a in enumerate(previous_actions)]
-        previous_str = f"\n\nPrevious actions taken:\n" + "\n".join(steps)
+        previous_str = "\n\nPrevious actions taken:\n" + "\n".join(steps)
 
     prompt = f"""You are controlling a computer to accomplish a goal.
 
@@ -136,18 +143,16 @@ Safety rules:
 - NEVER enter passwords or payment info
 - If unsure, use action "screenshot" to look again"""
 
-    response = client.messages.create(
-        model="claude-sonnet-4-6",
+    response = client.chat.completions.create(
+        model="llama-3.2-90b-vision-preview",
         max_tokens=1024,
         messages=[{
             "role": "user",
             "content": [
                 {
-                    "type": "image",
-                    "source": {
-                        "type": "base64",
-                        "media_type": "image/png",
-                        "data": screenshot_base64
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/png;base64,{screenshot_base64}"
                     }
                 },
                 {"type": "text", "text": prompt}
@@ -155,9 +160,7 @@ Safety rules:
         }]
     )
 
-    import json
-    text = response.content[0].text.strip()
-    # Extract JSON even if wrapped in markdown code blocks
+    text = response.choices[0].message.content.strip()
     if "```" in text:
         text = text.split("```")[1]
         if text.startswith("json"):
@@ -168,12 +171,12 @@ Safety rules:
 async def extract_memories(conversation: List[dict], existing_memories: List[str]) -> List[dict]:
     """
     Analyze a conversation and extract facts worth remembering about the user.
-    Returns list of {content, category, importance} dicts.
+    Uses llama-3.1-8b-instant (small, fast, free).
     """
     if not conversation:
         return []
 
-    client = anthropic.Anthropic(api_key=settings.anthropic_api_key)
+    client = Groq(api_key=settings.groq_api_key)
 
     conv_text = "\n".join(
         f"{m['role'].upper()}: {m['content'][:500]}" for m in conversation[-10:]
@@ -201,14 +204,13 @@ Respond with JSON array (empty array if nothing new):
 Categories: personal, work, preferences, projects, family, health, finance, other
 Importance: 1-10 (10 = very important to remember)"""
 
-    response = client.messages.create(
-        model="claude-haiku-4-5-20251001",
+    response = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
         max_tokens=1024,
         messages=[{"role": "user", "content": prompt}]
     )
 
-    import json
-    text = response.content[0].text.strip()
+    text = response.choices[0].message.content.strip()
     if "```" in text:
         text = text.split("```")[1]
         if text.startswith("json"):

@@ -9,8 +9,8 @@ class Settings(BaseSettings):
     debug: bool = False
     version: str = "0.1.0"
 
-    # Anthropic / Claude
-    anthropic_api_key: str = ""
+    # Groq (free AI — chat + voice transcription + vision)
+    groq_api_key: str = ""
 
     # Supabase
     supabase_url: str = ""
@@ -25,14 +25,11 @@ class Settings(BaseSettings):
     stripe_pro_price_id: str = ""
     stripe_premium_price_id: str = ""
 
-    # OpenAI (for Whisper STT)
-    openai_api_key: str = ""
-
-    # ElevenLabs (TTS)
+    # ElevenLabs (TTS — 10k chars/month free)
     elevenlabs_api_key: str = ""
     elevenlabs_voice_id: str = "21m00Tcm4TlvDq8ikWAM"  # default voice
 
-    # Web Search (Serper)
+    # Web Search (Serper — free tier: 2500 searches/month)
     serper_api_key: str = ""
 
     # Redis (Celery)
