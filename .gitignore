@@ -1,0 +1,39 @@
+# Environment files — NEVER commit these
+.env
+*.env
+backend/.env
+frontend/.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+dist/
+build/
+*.egg-info/
+.pytest_cache/
+
+# Node / Electron
+node_modules/
+dist/
+dist-electron/
+.vite/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# AI models (too large for git)
+offline/models/
+
+# IDE
+.vscode/settings.json
+.idea/
+*.swp
