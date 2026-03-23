@@ -6,6 +6,8 @@ import Billing from './pages/Billing'
 import Settings from './pages/Settings'
 import Landing from './pages/Landing'
 import Download from './pages/Download'
+import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
 import Voice from './pages/Voice'
 import Agent from './pages/Agent'
 
@@ -41,6 +43,8 @@ export default function App() {
         <Route path="/" element={<HomeRoute />} />
         <Route path="/login" element={<Login />} />
         <Route path="/download" element={<Download />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/chat" element={<ProtectedRoute><Chat /></ProtectedRoute>} />
         <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
