@@ -1,4 +1,3 @@
-import os
 from functools import lru_cache
 from pydantic_settings import BaseSettings
 
@@ -39,7 +38,12 @@ class Settings(BaseSettings):
     frontend_url: str = "http://localhost:5173"
 
     # CORS — add your Vercel URL here after deploying
-    allowed_origins: list[str] = ["http://localhost:5173", "http://localhost:3000", "app://.*"]
+    allowed_origins: list[str] = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "app://.*",
+        "https://ai-assistant-sooty-theta.vercel.app",
+    ]
 
     class Config:
         env_file = ".env"
