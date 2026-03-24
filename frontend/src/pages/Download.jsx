@@ -9,7 +9,7 @@ const REQUIREMENTS = [
 
 export default function Download() {
   // Replace this URL with your actual GitHub Release .exe URL after building
-  const WINDOWS_DOWNLOAD_URL = 'https://github.com/suxrobbekbaxriddinov24-eng/ai-assistant/releases/download/v0.1.0/Humanoid.0.1.0.exe'
+  const WINDOWS_DOWNLOAD_URL = 'https://github.com/suxrobbekbaxriddinov24-eng/ai-assistant/releases/download/v0.2.0/Humanoid.0.1.0.exe'
 
   return (
     <div className="min-h-screen bg-gray-950 text-white">
