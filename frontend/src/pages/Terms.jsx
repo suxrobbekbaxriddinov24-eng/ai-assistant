@@ -9,12 +9,12 @@ export default function Terms() {
         <div className="space-y-6 text-gray-300 leading-relaxed">
           <section>
             <h2 className="text-xl font-semibold text-white mb-2">1. Acceptance of Terms</h2>
-            <p>By accessing or using AI Assistant ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.</p>
+            <p>By accessing or using Humanoid ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-2">2. Description of Service</h2>
-            <p>AI Assistant is a subscription-based SaaS product that provides AI-powered chat, voice assistance, and task automation. The Service is provided on a monthly subscription basis with multiple tiers: Free, Plus, Pro, and Premium.</p>
+            <p>Humanoid is a subscription-based SaaS product that provides AI-powered chat, voice assistance, and task automation. The Service is provided on a monthly subscription basis with multiple tiers: Free, Plus, Pro, and Premium.</p>
           </section>
 
           <section>

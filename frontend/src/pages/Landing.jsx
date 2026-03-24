@@ -55,7 +55,7 @@ export default function Landing() {
           <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
             AI
           </div>
-          <span className="font-bold text-white">AI Assistant</span>
+          <span className="font-bold text-white">Humanoid</span>
         </div>
         <div className="flex items-center gap-4">
           <a href="#pricing" className="text-sm text-gray-400 hover:text-white transition-colors">Pricing</a>
@@ -107,7 +107,7 @@ export default function Landing() {
             <div className="w-3 h-3 rounded-full bg-red-500" />
             <div className="w-3 h-3 rounded-full bg-yellow-500" />
             <div className="w-3 h-3 rounded-full bg-green-500" />
-            <span className="text-xs text-gray-600 ml-2">AI Assistant</span>
+            <span className="text-xs text-gray-600 ml-2">Humanoid</span>
           </div>
           <div className="space-y-3">
             <div className="flex justify-end">
@@ -231,14 +231,14 @@ export default function Landing() {
             <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-600 rounded-md flex items-center justify-center text-white text-xs font-bold">
               AI
             </div>
-            <span className="text-sm text-gray-500">AI Personal Assistant</span>
+            <span className="text-sm text-gray-500">Humanoid</span>
           </div>
           <div className="flex gap-6 text-sm text-gray-600">
             <Link to="/login" className="hover:text-white transition-colors">Sign In</Link>
             <Link to="/download" className="hover:text-white transition-colors">Download</Link>
             <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
           </div>
-          <p className="text-xs text-gray-700">© 2026 AI Assistant. All rights reserved.</p>
+          <p className="text-xs text-gray-700">© 2026 Humanoid. All rights reserved.</p>
         </div>
       </footer>
     </div>

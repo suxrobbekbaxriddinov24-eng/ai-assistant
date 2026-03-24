@@ -19,7 +19,7 @@ export default function Download() {
           <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-sm font-bold">
             AI
           </div>
-          <span className="font-bold text-white">AI Assistant</span>
+          <span className="font-bold text-white">Humanoid</span>
         </Link>
         <Link
           to="/login"
@@ -35,7 +35,7 @@ export default function Download() {
           AI
         </div>
 
-        <h1 className="text-4xl font-bold mb-3">Download AI Assistant</h1>
+        <h1 className="text-4xl font-bold mb-3">Download Humanoid</h1>
         <p className="text-gray-400 text-lg mb-10">
           Install the desktop app for the full experience — voice, screen control, and system tray.
         </p>
@@ -91,7 +91,7 @@ export default function Download() {
           <ol className="space-y-3">
             {[
               'Run the .exe installer (click "More info" → "Run anyway" if Windows warns you)',
-              'AI Assistant opens automatically',
+              'Humanoid opens automatically',
               'Create your free account or sign in',
               'Start chatting — 10 free messages every day',
             ].map((step, i) => (

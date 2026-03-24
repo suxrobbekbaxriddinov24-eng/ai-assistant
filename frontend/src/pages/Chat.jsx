@@ -134,7 +134,7 @@ export default function Chat() {
             AI
           </div>
           <div>
-            <p className="text-sm font-medium">AI Assistant</p>
+            <p className="text-sm font-medium">Humanoid</p>
             <p className="text-xs text-green-400">Online</p>
           </div>
         </div>
