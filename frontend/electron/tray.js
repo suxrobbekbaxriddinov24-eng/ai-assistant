@@ -8,7 +8,7 @@ function setupTray(appInstance, mainWindow) {
   const icon = nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 })
 
   tray = new Tray(icon)
-  tray.setToolTip('AI Personal Assistant')
+  tray.setToolTip('Humanoid')
 
   const contextMenu = Menu.buildFromTemplate([
     {

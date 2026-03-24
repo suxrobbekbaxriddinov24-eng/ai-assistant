@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron')
+const { app, BrowserWindow, ipcMain, shell, globalShortcut } = require('electron')
 const path = require('path')
 const { setupTray } = require('./tray')
 const { setupIpcHandlers } = require('./ipc-handlers')
@@ -6,6 +6,7 @@ const { setupIpcHandlers } = require('./ipc-handlers')
 const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged
 
 let mainWindow = null
+let isQuitting = false
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -38,6 +39,14 @@ function createWindow() {
     return { action: 'deny' }
   })
 
+  // Minimize to tray instead of closing
+  mainWindow.on('close', (event) => {
+    if (!isQuitting) {
+      event.preventDefault()
+      mainWindow.hide()
+    }
+  })
+
   mainWindow.on('closed', () => {
     mainWindow = null
   })
@@ -50,9 +59,34 @@ app.whenReady().then(() => {
   setupTray(app, win)
   setupIpcHandlers(win)
 
+  // Keyboard shortcuts
+  globalShortcut.register('CommandOrControl+N', () => {
+    if (mainWindow) {
+      mainWindow.show()
+      mainWindow.focus()
+      mainWindow.webContents.send('shortcut:new-chat')
+    }
+  })
+
+  globalShortcut.register('CommandOrControl+,', () => {
+    if (mainWindow) {
+      mainWindow.show()
+      mainWindow.focus()
+      mainWindow.webContents.send('shortcut:settings')
+    }
+  })
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+})
+
+app.on('before-quit', () => {
+  isQuitting = true
+})
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll()
 })
 
 app.on('window-all-closed', () => {

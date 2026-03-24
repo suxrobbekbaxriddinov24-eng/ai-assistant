@@ -22,7 +22,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
 
   // Listen for events from main process
   on: (channel, callback) => {
-    const allowedChannels = ['agent:update', 'tray:open-chat', 'update:available']
+    const allowedChannels = ['agent:update', 'tray:open-chat', 'update:available', 'shortcut:new-chat', 'shortcut:settings']
     if (allowedChannels.includes(channel)) {
       ipcRenderer.on(channel, (event, ...args) => callback(...args))
     }

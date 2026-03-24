@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
+import DesktopGate from './components/DesktopGate'
 import Chat from './pages/Chat'
+
+const isElectron = typeof window !== 'undefined' && !!window.electronAPI
 import Login from './pages/Login'
 import Billing from './pages/Billing'
 import Settings from './pages/Settings'
@@ -12,7 +15,7 @@ import Voice from './pages/Voice'
 import Agent from './pages/Agent'
 
 function ProtectedRoute({ children }) {
-  const { isLoggedIn, loading } = useAuth()
+  const { isLoggedIn, loading, profile } = useAuth()
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-950 flex items-center justify-center">
@@ -20,7 +23,9 @@ function ProtectedRoute({ children }) {
       </div>
     )
   }
-  return isLoggedIn ? children : <Navigate to="/login" replace />
+  if (!isLoggedIn) return <Navigate to="/login" replace />
+  if (isElectron && profile?.tier === 'free') return <DesktopGate />
+  return children
 }
 
 // Show Landing to guests, Chat to logged-in users

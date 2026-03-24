@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useChat } from '../hooks/useChat'
 import { useAuth } from '../hooks/useAuth'
 import { useSubscription } from '../hooks/useSubscription'
@@ -6,6 +7,7 @@ import { MessageBubble } from '../components/chat/MessageBubble'
 import { StreamingText } from '../components/chat/StreamingText'
 import { InputBar } from '../components/chat/InputBar'
 import { TierBadge } from '../components/shared/TierBadge'
+import TitleBar from '../components/TitleBar'
 
 export default function Chat() {
   const {
@@ -26,9 +28,21 @@ export default function Chat() {
   const { requestsLeft } = useSubscription()
   const messagesEndRef = useRef(null)
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const navigate = useNavigate()
 
   useEffect(() => {
     loadConversations()
+  }, [])
+
+  // Electron keyboard shortcuts
+  useEffect(() => {
+    if (!window.electronAPI) return
+    window.electronAPI.on('shortcut:new-chat', startNewChat)
+    window.electronAPI.on('shortcut:settings', () => navigate('/settings'))
+    return () => {
+      window.electronAPI.off('shortcut:new-chat', startNewChat)
+      window.electronAPI.off('shortcut:settings', () => navigate('/settings'))
+    }
   }, [])
 
   useEffect(() => {
@@ -50,7 +64,9 @@ export default function Chat() {
   const isNearLimit = left !== Infinity && left <= 3
 
   return (
-    <div className="flex h-screen bg-gray-950 text-white overflow-hidden">
+    <div className="flex flex-col h-screen bg-gray-950 text-white overflow-hidden">
+      <TitleBar />
+      <div className="flex flex-1 overflow-hidden">
       {/* Sidebar */}
       {sidebarOpen && (
         <div className="w-64 flex-shrink-0 bg-gray-900 border-r border-gray-800 flex flex-col">
@@ -179,6 +195,7 @@ export default function Chat() {
         </div>
 
         <InputBar onSend={sendMessage} disabled={isStreaming} />
+      </div>
       </div>
     </div>
   )
