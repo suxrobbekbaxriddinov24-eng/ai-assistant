@@ -31,7 +31,7 @@ function setupIpcHandlers(mainWindow) {
     const path = require('path')
 
     return new Promise((resolve, reject) => {
-      const scriptPath = path.join(__dirname, '../../offline/screen_executor.py')
+      const scriptPath = path.join(__dirname, '../offline/screen_executor.py')
       const args = [scriptPath, JSON.stringify(action)]
 
       execFile('python', args, { timeout: 10000 }, (error, stdout, stderr) => {

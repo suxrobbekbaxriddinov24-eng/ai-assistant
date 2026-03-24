@@ -48,7 +48,7 @@ async def run_agent_task(task_id: str, user_id: str):
             messages[0]["content"] += f"\n\nSearch results:\n{context}"
             result_data["search_results"] = search_results
 
-        reply, _ = await chat_complete(messages, system, "claude-haiku-4-5-20251001", max_tokens=512)
+        reply, _ = await chat_complete(messages, system, "llama-3.1-8b-instant", max_tokens=512)
         result_data["summary"] = reply
 
         # Mark complete
