@@ -123,6 +123,15 @@ export default function Chat() {
 
           {/* Bottom links */}
           <div className="p-3 border-t border-gray-800 space-y-1">
+            <a href="/voice" className="block text-xs text-gray-500 hover:text-white px-3 py-2 rounded-xl hover:bg-gray-800 transition-colors">
+              🎙 Voice
+            </a>
+            <a href="/screen" className="block text-xs text-gray-500 hover:text-white px-3 py-2 rounded-xl hover:bg-gray-800 transition-colors">
+              🖥️ Screen Control
+            </a>
+            <a href="/agent" className="block text-xs text-gray-500 hover:text-white px-3 py-2 rounded-xl hover:bg-gray-800 transition-colors">
+              🤖 Agent
+            </a>
             <a href="/billing" className="block text-xs text-gray-500 hover:text-white px-3 py-2 rounded-xl hover:bg-gray-800 transition-colors">
               💳 Upgrade Plan
             </a>

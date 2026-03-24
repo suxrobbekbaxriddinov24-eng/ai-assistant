@@ -11,6 +11,7 @@ import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
 import Voice from './pages/Voice'
 import Agent from './pages/Agent'
+import Screen from './pages/Screen'
 
 const isElectron = typeof window !== 'undefined' && !!window.electronAPI
 
@@ -55,6 +56,7 @@ export default function App() {
         <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
         <Route path="/voice" element={<ProtectedRoute><Voice /></ProtectedRoute>} />
         <Route path="/agent" element={<ProtectedRoute><Agent /></ProtectedRoute>} />
+        <Route path="/screen" element={<ProtectedRoute><Screen /></ProtectedRoute>} />
       </Routes>
     </BrowserRouter>
   )
