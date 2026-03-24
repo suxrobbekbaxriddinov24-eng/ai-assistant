@@ -2,8 +2,6 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useAuth } from './hooks/useAuth'
 import DesktopGate from './components/DesktopGate'
 import Chat from './pages/Chat'
-
-const isElectron = typeof window !== 'undefined' && !!window.electronAPI
 import Login from './pages/Login'
 import Billing from './pages/Billing'
 import Settings from './pages/Settings'
@@ -13,6 +11,8 @@ import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
 import Voice from './pages/Voice'
 import Agent from './pages/Agent'
+
+const isElectron = typeof window !== 'undefined' && !!window.electronAPI
 
 function ProtectedRoute({ children }) {
   const { isLoggedIn, loading, profile } = useAuth()
